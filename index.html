@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snapchat Clone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Camera Tab -->
+        <div id="camera-tab" class="tab-content active">
+            <div class="camera-container">
+                <video id="video-preview" autoplay muted playsinline></video>
+                <canvas id="capture-canvas" style="display: none;"></canvas>
+                
+                <!-- Camera Controls -->
+                <div class="camera-controls">
+                    <div class="top-controls">
+                        <button id="flash-btn" class="control-btn">⚡</button>
+                        <button id="switch-camera-btn" class="control-btn">🔄</button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <div class="filter-list">
+                            <div class="filter-item active" data-filter="none">Normal</div>
+                            <div class="filter-item" data-filter="grayscale(100%)">B&W</div>
+                            <div class="filter-item" data-filter="sepia(100%)">Sepia</div>
+                            <div class="filter-item" data-filter="sepia(50%) contrast(120%)">Vintage</div>
+                            <div class="filter-item" data-filter="brightness(150%)">Bright</div>
+                            <div class="filter-item" data-filter="blur(2px)">Blur</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bottom-controls">
+                        <button id="photo-btn" class="capture-btn">📷</button>
+                        <button id="video-btn" class="capture-btn">🎥</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Captured Media Preview -->
+            <div id="media-preview" class="media-preview hidden">
+                <div class="preview-container">
+                    <img id="preview-image" style="display: none;">
+                    <video id="preview-video" controls style="display: none;"></video>
+                </div>
+                <div class="preview-controls">
+                    <button id="retake-btn" class="btn btn--secondary">Retake</button>
+                    <button id="save-story-btn" class="btn btn--primary">Add to Story</button>
+                    <button id="send-btn" class="btn btn--primary">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Tab -->
+        <div id="chat-tab" class="tab-content">
+            <div class="chat-header">
+                <h2>Chats</h2>
+                <button id="new-chat-btn" class="control-btn">➕</button>
+            </div>
+            
+            <div class="chat-list">
+                <div class="chat-item" data-contact="John Doe">
+                    <div class="chat-avatar">JD</div>
+                    <div class="chat-info">
+                        <div class="chat-name">John Doe</div>
+                        <div class="chat-message">Hey! How's it going?</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">2m ago</div>
+                        <div class="unread-badge">2</div>
+                    </div>
+                </div>
+                
+                <div class="chat-item" data-contact="Sarah Smith">
+                    <div class="chat-avatar">SS</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Sarah Smith</div>
+                        <div class="chat-message">Check out this photo!</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">1h ago</div>
+                    </div>
+                </div>
+                
+                <div class="chat-item" data-contact="Mike Johnson">
+                    <div class="chat-avatar">MJ</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Mike Johnson</div>
+                        <div class="chat-message">Let's meet up later</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">3h ago</div>
+                        <div class="unread-badge">1</div>
+                    </div>
+                </div>
+                
+                <div class="chat-item" data-contact="Emma Wilson">
+                    <div class="chat-avatar">EW</div>
+                    <div class="chat-info">
+                        <div class="chat-name">Emma Wilson</div>
+                        <div class="chat-message">Thanks for the help!</div>
+                    </div>
+                    <div class="chat-meta">
+                        <div class="chat-time">1d ago</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Individual Chat Window -->
+            <div id="chat-window" class="chat-window hidden">
+                <div class="chat-window-header">
+                    <button id="back-to-chats" class="control-btn">←</button>
+                    <div class="chat-contact-name">John Doe</div>
+                </div>
+                
+                <div class="messages-container">
+                    <div class="message received">
+                        <div class="message-content">Hey! How's it going?</div>
+                        <div class="message-time">2:30 PM</div>
+                    </div>
+                </div>
+                
+                <div class="message-input-container">
+                    <input type="text" id="message-input" placeholder="Type a message..." class="form-control">
+                    <button id="send-message-btn" class="btn btn--primary">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stories Tab -->
+        <div id="stories-tab" class="tab-content">
+            <div class="stories-header">
+                <h2>Stories</h2>
+                <button id="add-story-btn" class="control-btn">➕</button>
+            </div>
+            
+            <div class="stories-list">
+                <div class="story-item my-story">
+                    <div class="story-avatar">You</div>
+                    <div class="story-name">My Story</div>
+                    <div class="story-time">Add to story</div>
+                </div>
+                
+                <div class="story-item" data-story="John Doe">
+                    <div class="story-avatar unviewed">JD</div>
+                    <div class="story-name">John Doe</div>
+                    <div class="story-time">2h ago</div>
+                </div>
+                
+                <div class="story-item" data-story="Sarah Smith">
+                    <div class="story-avatar viewed">SS</div>
+                    <div class="story-name">Sarah Smith</div>
+                    <div class="story-time">4h ago</div>
+                </div>
+                
+                <div class="story-item" data-story="Mike Johnson">
+                    <div class="story-avatar unviewed">MJ</div>
+                    <div class="story-name">Mike Johnson</div>
+                    <div class="story-time">6h ago</div>
+                </div>
+            </div>
+            
+            <!-- Story Viewer -->
+            <div id="story-viewer" class="story-viewer hidden">
+                <div class="story-progress">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="story-content">
+                    <img id="story-image" src="" alt="Story">
+                </div>
+                <div class="story-viewer-controls">
+                    <button id="close-story" class="control-btn">✕</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discover Tab -->
+        <div id="discover-tab" class="tab-content">
+            <div class="discover-header">
+                <h2>Discover</h2>
+            </div>
+            
+            <div class="discover-content">
+                <div class="discover-grid">
+                    <div class="discover-item">
+                        <div class="discover-thumbnail">🌟</div>
+                        <div class="discover-title">Trending Now</div>
+                    </div>
+                    <div class="discover-item">
+                        <div class="discover-thumbnail">🎵</div>
+                        <div class="discover-title">Music</div>
+                    </div>
+                    <div class="discover-item">
+                        <div class="discover-thumbnail">🎮</div>
+                        <div class="discover-title">Games</div>
+                    </div>
+                    <div class="discover-item">
+                        <div class="discover-thumbnail">📺</div>
+                        <div class="discover-title">Shows</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profile-tab" class="tab-content">
+            <div class="profile-header">
+                <div class="profile-avatar">ME</div>
+                <div class="profile-name">My Profile</div>
+                <div class="profile-username">@myusername</div>
+            </div>
+            
+            <div class="profile-content">
+                <div class="profile-section">
+                    <h3>Settings</h3>
+                    <div class="setting-item">
+                        <span>Camera Resolution</span>
+                        <select class="form-control setting-select">
+                            <option>HD (720p)</option>
+                            <option>Full HD (1080p)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <span>Auto-save to Story</span>
+                        <input type="checkbox" id="auto-save-toggle">
+                    </div>
+                    <div class="setting-item">
+                        <span>Privacy Mode</span>
+                        <input type="checkbox" id="privacy-toggle">
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h3>My Snaps</h3>
+                    <div class="saved-snaps">
+                        <div class="snap-item">📷 Photo - Today</div>
+                        <div class="snap-item">🎥 Video - Yesterday</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-btn" data-tab="chat">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Chat</span>
+            </button>
+            <button class="nav-btn" data-tab="camera">
+                <span class="nav-icon">📷</span>
+                <span class="nav-label">Camera</span>
+            </button>
+            <button class="nav-btn active" data-tab="camera">
+                <span class="nav-icon camera-icon">📷</span>
+            </button>
+            <button class="nav-btn" data-tab="stories">
+                <span class="nav-icon">⭕</span>
+                <span class="nav-label">Stories</span>
+            </button>
+            <button class="nav-btn" data-tab="discover">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-label">Discover</span>
+            </button>
+            <button class="nav-btn" data-tab="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
